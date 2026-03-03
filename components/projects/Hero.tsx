@@ -3,6 +3,7 @@
 import Script from "next/script";
 import Image from "next/image";
 import securaLogo from "@/lib/dra-secura-2.svg";
+import inaraLogo from "@/lib/dra-inara.svg";
 import repImage from "@/lib/RM1037-2.png";
 import type { ProjectContent } from "@/lib/projects";
 
@@ -11,6 +12,8 @@ type HeroProps = {
 };
 
 export default function Hero({ project }: HeroProps) {
+  const projectLogo = project.slug === "inara" ? inaraLogo : securaLogo;
+
   return (
     <section className="relative min-h-[100svh] overflow-hidden bg-[#073a2f] text-white lg:h-[100svh]">
       <div
@@ -29,7 +32,7 @@ export default function Hero({ project }: HeroProps) {
         <div className="relative flex flex-col justify-center lg:pr-2">
           <div className="mb-4 flex flex-wrap items-center gap-3">
             <Image
-              src={securaLogo}
+              src={projectLogo}
               alt={`${project.name} logo`}
               width={150}
               height={50}
