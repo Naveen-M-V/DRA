@@ -1,22 +1,28 @@
 import nodemailer from "nodemailer";
 
-const emailUser = process.env.GMAIL_EMAIL;
-const emailPass = process.env.GMAIL_APP_PASSWORD;
+function getTransporter() {
+  const emailUser = process.env.GMAIL_EMAIL;
+  const emailPass = process.env.GMAIL_APP_PASSWORD;
 
-if (!emailUser || !emailPass) {
-  throw new Error("Missing GMAIL_EMAIL or GMAIL_APP_PASSWORD env variables");
+  if (!emailUser || !emailPass) {
+    throw new Error("Missing GMAIL_EMAIL or GMAIL_APP_PASSWORD env variables");
+  }
+
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: emailUser,
+      pass: emailPass,
+    },
+  });
+
+  return { transporter, emailUser };
 }
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: emailUser,
-    pass: emailPass,
-  },
-});
 
 export async function sendVerificationCode(email: string, code: string) {
   try {
+    const { transporter, emailUser } = getTransporter();
+
     await transporter.sendMail({
       from: `DRA Projects <${emailUser}>`,
       to: email,
