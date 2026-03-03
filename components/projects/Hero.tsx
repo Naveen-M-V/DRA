@@ -17,7 +17,7 @@ export default function Hero({ project }: HeroProps) {
   const projectLogo = project.slug === "inara" ? inaraLogo : securaLogo;
 
   return (
-    <section className="relative min-h-[100svh] overflow-hidden bg-[#073a2f] text-white">
+    <section className="relative h-[100svh] overflow-hidden bg-[#073a2f] text-white">
       <div
         className="absolute inset-0 opacity-20"
         style={{
@@ -29,7 +29,7 @@ export default function Hero({ project }: HeroProps) {
       />
       <div className="absolute inset-0 bg-gradient-to-r from-[#062f27]/95 via-[#0a4a3b]/80 to-[#062f27]/95" />
 
-      <div className="relative mx-auto grid min-h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-8 px-4 py-12 pb-0 md:grid-cols-2 md:px-8 md:pb-0 lg:grid-cols-[2fr_1.5fr_1.5fr] lg:gap-4 lg:px-12 lg:pb-0">
+      <div className="relative mx-auto grid h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-8 px-4 py-12 pb-0 md:grid-cols-2 md:px-8 md:pb-0 lg:grid-cols-[2fr_1.5fr_1.5fr] lg:gap-4 lg:px-12 lg:pb-0">
         <div className="flex flex-col justify-center lg:col-span-1">
           <div className="max-w-3xl">
             <div className="mb-6 flex flex-col items-start gap-4">
@@ -47,19 +47,19 @@ export default function Hero({ project }: HeroProps) {
               </span>
             </div>
 
-            <h1 className="font-serif-display text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="font-serif-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl">
               {project.headline.split("LOTS")[0]}
               <span className="text-yellow-400">LOTS!</span>
             </h1>
 
-            <p className="mt-4 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
+            <p className="mt-2 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
               {project.location}
             </p>
-            <p className="mt-3 text-base italic text-yellow-200/80 sm:text-lg">
+            <p className="mt-1 text-base italic text-yellow-200/80 sm:text-lg">
               &quot;{project.tagline}&quot;
             </p>
 
-            <div className="mt-8 grid max-w-4xl gap-4 sm:grid-cols-3">
+            <div className="mt-6 grid max-w-4xl gap-4 sm:grid-cols-3">
               <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
                 <p className="text-[10px] font-bold uppercase tracking-wide text-yellow-300 sm:text-xs">
                   Launch Price
@@ -89,7 +89,7 @@ export default function Hero({ project }: HeroProps) {
               </div>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3 text-sm font-medium">
+            <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
               {project.chips.map((chip: string) => {
                 let icon = "";
                 if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "🚇 ";
