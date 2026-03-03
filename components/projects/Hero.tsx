@@ -29,7 +29,7 @@ export default function Hero({ project }: HeroProps) {
       />
       <div className="absolute inset-0 bg-gradient-to-r from-[#062f27]/95 via-[#0a4a3b]/80 to-[#062f27]/95" />
 
-      <div className="relative mx-auto grid min-h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-8 px-4 py-12 md:grid-cols-2 md:px-8 lg:grid-cols-[2fr_1.5fr_1.5fr] lg:gap-4 lg:px-12">
+      <div className="relative mx-auto grid min-h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-8 px-4 py-12 pb-0 md:grid-cols-2 md:px-8 md:pb-0 lg:grid-cols-[2fr_1.5fr_1.5fr] lg:gap-4 lg:px-12 lg:pb-0">
         <div className="flex flex-col justify-center lg:col-span-1">
           <div className="max-w-3xl">
             <div className="mb-6 flex flex-col items-start gap-4">
