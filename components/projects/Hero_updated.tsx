@@ -2,7 +2,6 @@
 
 import Script from "next/script";
 import Image from "next/image";
-import EmailVerificationGate from "../EmailVerificationGate";
 import securaLogo from "@/lib/dra-secura-2.svg";
 import inaraLogo from "@/lib/dra-inara.svg";
 import repImage from "@/lib/RM1037-2.png";
@@ -31,7 +30,8 @@ export default function Hero({ project }: HeroProps) {
 
       <div className="relative mx-auto grid min-h-[100svh] max-w-7xl grid-cols-1 gap-6 px-4 py-6 md:px-8 md:py-8 lg:h-[100svh] lg:grid-cols-[1.2fr_0.6fr_0.9fr] lg:items-center lg:gap-6 lg:py-6">
         <div className="relative flex flex-col justify-center lg:pr-2">
-          <div className="mb-4 flex flex-col items-start gap-2">
+          {/* Logo above Launching */}
+          <div className="mb-3 flex w-fit items-center">
             <Image
               src={projectLogo}
               alt={`${project.name} logo`}
@@ -40,7 +40,11 @@ export default function Hero({ project }: HeroProps) {
               className="h-auto w-[110px] sm:w-[130px] md:w-[150px]"
               priority
             />
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1 text-sm font-semibold uppercase tracking-wide text-yellow-300">
+          </div>
+
+          {/* Launching badge with rocket icon */}
+          <div className="mb-4 flex items-center gap-2">
+            <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1 text-sm font-semibold uppercase tracking-wide text-yellow-300">
               <span>🚀</span>
               Launching
             </span>
@@ -90,43 +94,58 @@ export default function Hero({ project }: HeroProps) {
 
           <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium sm:mt-4 sm:text-sm">
             {project.chips.map((chip: string) => {
-              let icon = "";
-              if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "🚂 ";
-              else if (chip.toLowerCase().includes("orr") || chip.toLowerCase().includes("road")) icon = "📍 ";
-              else if (chip.toLowerCase().includes("sq.ft") || chip.toLowerCase().includes("market")) icon = "◻️ ";
-              else if (chip.toLowerCase().includes("arch") || chip.toLowerCase().includes("community") || chip.toLowerCase().includes("appreciation")) icon = "🏛️ ";
-              
+              let icon = "📍";
+              if (chip.includes("Metro")) icon = "🚂";
+              if (chip.includes("ORR")) icon = "📍";
+              if (chip.includes("Sq.ft") || chip.includes("2372")) icon = "◻️";
+              if (chip.includes("Grand") || chip.includes("Arch")) icon = "🏛️";
+
               return (
                 <span
                   key={chip}
-                  className="rounded-full border border-emerald-400/50 bg-emerald-900/40 px-3 py-1 text-emerald-100 sm:py-1.5"
+                  className="flex items-center gap-1 rounded-full border border-emerald-400/50 bg-emerald-900/40 px-3 py-1 text-emerald-100 sm:py-1.5"
                 >
-                  {icon}{chip}
+                  <span>{icon}</span>
+                  {chip}
                 </span>
               );
             })}
           </div>
         </div>
 
-        <div className="pointer-events-none hidden lg:flex lg:items-end lg:justify-center lg:self-end">
+        {/* Bigger woman image - centered between boxes on desktop */}
+        <div className="pointer-events-none relative hidden lg:flex lg:items-center lg:justify-center">
           <Image
             src={repImage}
             alt="DRA Representative"
-            width={600}
-            height={950}
-            className="h-auto w-[450px] xl:w-[550px] 2xl:w-[600px]"
+            width={380}
+            height={600}
+            className="h-auto w-full max-w-[350px] xl:max-w-[420px]"
             priority
           />
         </div>
 
         <aside className="relative z-10 flex items-start justify-center lg:justify-end">
-          <EmailVerificationGate
-            formId={project.formId}
-            projectName={project.name}
-            srd={project.srd}
-            campaignName={project.campaignName}
-            source={project.source}
-          />
+          <div className="w-full max-w-[450px] rounded-2xl border border-yellow-500/30 bg-[#073126]/95 p-5 shadow-2xl backdrop-blur lg:max-w-[400px]">
+            <h2 className="text-center text-xl font-bold font-serif-display sm:text-2xl xl:text-3xl">
+              Get Launch Price Details
+            </h2>
+            <div className="mx-auto mt-2 h-1 w-16 rounded bg-[#FFB800] sm:mt-3 sm:w-20" />
+
+            <div id={`sell-do-form-${project.formId}`} className="mt-4 sm:mt-6" />
+            <Script id={`sell-do-embed-${project.formId}`} strategy="afterInteractive">
+              {`(function(){
+                var container = document.getElementById('sell-do-form-${project.formId}');
+                if (!container) return;
+                container.innerHTML = '';
+                var script = document.createElement('script');
+                script.src = 'https://forms.cdn.sell.do/t/forms/5ba883447c0dac3321d9f483/${project.formId}.js';
+                script.setAttribute('data-form-id', '${project.formId}');
+                script.async = true;
+                container.appendChild(script);
+              })();`}
+            </Script>
+          </div>
         </aside>
       </div>
     </section>

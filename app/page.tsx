@@ -9,13 +9,13 @@ export default function HomePage() {
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
           <Link
-            href="/projects/secura"
+            href="/secura"
             className="rounded-xl bg-[#FFB800] px-5 py-3 text-lg font-bold text-black"
           >
             DRA Secura
           </Link>
           <Link
-            href="/projects/inara"
+            href="/inara"
             className="rounded-xl bg-[#FFB800] px-5 py-3 text-lg font-bold text-black"
           >
             DRA Inara
