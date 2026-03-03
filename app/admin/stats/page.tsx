@@ -157,7 +157,7 @@ export default function StatsPage() {
                   className="bg-[#0a4a3b] p-4 rounded-lg border border-[#FFB800]/20"
                 >
                   <p className="text-gray-300 text-sm">{project}</p>
-                  <p className="text-3xl font-bold text-[#FFB800] mt-2">{count}</p>
+                  <p className="text-3xl font-bold text-[#FFB800] mt-2">{count as number}</p>
                 </div>
               ))}
             </div>
@@ -179,7 +179,7 @@ export default function StatsPage() {
                   }`}
                 >
                   <p className="text-gray-300">{campaign}</p>
-                  <p className="text-[#FFB800] font-bold">{count}</p>
+                  <p className="text-[#FFB800] font-bold">{count as number}</p>
                 </div>
               ))}
             </div>
@@ -203,7 +203,7 @@ export default function StatsPage() {
                     }`}
                   >
                     <p className="text-gray-300">{date}</p>
-                    <p className="text-[#FFB800] font-bold">{count}</p>
+                    <p className="text-[#FFB800] font-bold">{count as number}</p>
                   </div>
                 ))}
             </div>
