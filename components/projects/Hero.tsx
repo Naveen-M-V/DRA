@@ -29,7 +29,7 @@ export default function Hero({ project }: HeroProps) {
       />
       <div className="absolute inset-0 bg-gradient-to-r from-[#062f27]/95 via-[#0a4a3b]/85 to-[#062f27]/95" />
 
-      <div className="relative mx-auto grid min-h-[100svh] max-w-7xl grid-cols-1 gap-6 px-4 py-6 md:px-8 md:py-8 lg:h-[100svh] lg:grid-cols-[1.2fr_0.6fr_0.9fr] lg:items-center lg:gap-6 lg:py-6">
+      <div className="relative mx-auto grid min-h-[100svh] max-w-7xl grid-cols-1 gap-6 px-4 py-6 md:px-8 md:py-8 lg:h-[100svh] lg:grid-cols-[1.1fr_0.7fr_0.9fr] lg:items-center lg:gap-6 lg:py-6">
         <div className="relative flex flex-col justify-center lg:pr-2">
           <div className="mb-4 flex flex-col items-start gap-2">
             <Image
@@ -91,7 +91,7 @@ export default function Hero({ project }: HeroProps) {
           <div className="mt-3 flex flex-wrap gap-2 text-xs font-medium sm:mt-4 sm:text-sm">
             {project.chips.map((chip: string) => {
               let icon = "";
-              if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "🚂 ";
+              if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "� ";
               else if (chip.toLowerCase().includes("orr") || chip.toLowerCase().includes("road")) icon = "📍 ";
               else if (chip.toLowerCase().includes("sq.ft") || chip.toLowerCase().includes("market")) icon = "◻️ ";
               else if (chip.toLowerCase().includes("arch") || chip.toLowerCase().includes("community") || chip.toLowerCase().includes("appreciation")) icon = "🏛️ ";
@@ -112,9 +112,9 @@ export default function Hero({ project }: HeroProps) {
           <Image
             src={repImage}
             alt="DRA Representative"
-            width={600}
-            height={950}
-            className="h-auto w-[450px] xl:w-[550px] 2xl:w-[600px]"
+            width={750}
+            height={1200}
+            className="h-auto w-[550px] xl:w-[650px] 2xl:w-[700px]"
             priority
           />
         </div>
