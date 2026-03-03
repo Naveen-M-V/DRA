@@ -3,6 +3,15 @@
 import { useState, useEffect } from "react";
 import { getLeadStats } from "@/lib/leadsStorage";
 
+type Lead = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  project: string;
+  submittedAt: string;
+};
+
 export default function StatsPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
@@ -227,7 +236,7 @@ export default function StatsPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {stats.recentLeads.map((lead, idx) => (
+                    {stats.recentLeads.map((lead: Lead, idx: number) => (
                       <tr
                         key={lead.id}
                         className={`${
