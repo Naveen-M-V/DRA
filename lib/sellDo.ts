@@ -11,9 +11,13 @@ export type LeadInput = {
 };
 
 const SELL_DO_ENDPOINT = "https://app.sell.do/api/leads/create";
-const SELL_DO_API_KEY = "c998c9770ebcee52128b80c62c144476";
+const SELL_DO_API_KEY = process.env.SELL_DO_API_KEY;
 
 export async function createSellDoLead(input: LeadInput) {
+  if (!SELL_DO_API_KEY) {
+    throw new Error("Missing SELL_DO_API_KEY environment variable");
+  }
+
   const params = new URLSearchParams();
   params.set("api_key", SELL_DO_API_KEY);
   params.set("sell_do[form][lead][name]", input.name);
