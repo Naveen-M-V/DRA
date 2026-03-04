@@ -36,9 +36,9 @@ export default function Hero({ project }: HeroProps) {
               <Image
                 src={projectLogo}
                 alt={`${project.name} logo`}
-                width={200}
-                height={70}
-                className="h-auto w-[160px] sm:w-[180px] md:w-[200px]"
+                width={250}
+                height={90}
+                className="h-auto w-[200px] sm:w-[220px] md:w-[250px]"
                 priority
               />
               <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-yellow-300 shadow-sm">
@@ -49,7 +49,7 @@ export default function Hero({ project }: HeroProps) {
 
             <h1 className="font-serif-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl">
               {project.headline.split("LOTS")[0]}
-              <span className="text-yellow-400">LOTS!</span>
+              {project.slug !== "inara" && <span className="text-yellow-400">LOTS!</span>}
             </h1>
 
             <p className="mt-2 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
