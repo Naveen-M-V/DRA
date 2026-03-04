@@ -114,8 +114,8 @@ export default function Hero({ project }: HeroProps) {
           <Image
             src={repImage}
             alt="DRA Representative"
-            width={800}
-            height={1600}
+            width={1000}
+            height={2000}
             className="h-auto w-full"
             priority
           />

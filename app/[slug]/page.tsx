@@ -6,7 +6,7 @@ type PageProps = {
 };
 
 export async function generateStaticParams() {
-  return [{ slug: "secura" }, { slug: "inara" }];
+  return [{ slug: "secura" }, { slug: "inara" }, { slug: "securari" }];
 }
 
 export default async function ProjectPage({ params }: PageProps) {
