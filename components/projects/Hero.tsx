@@ -36,9 +36,9 @@ export default function Hero({ project }: HeroProps) {
               <Image
                 src={projectLogo}
                 alt={`${project.name} logo`}
-                width={300}
-                height={110}
-                className="h-auto w-[240px] sm:w-[270px] md:w-[300px]"
+                width={350}
+                height={130}
+                className="h-auto w-[280px] sm:w-[320px] md:w-[350px]"
                 priority
               />
               <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-yellow-300 shadow-sm">
@@ -52,12 +52,16 @@ export default function Hero({ project }: HeroProps) {
               {project.slug !== "inara" && <span className="text-yellow-400">LOTS!</span>}
             </h1>
 
-            <p className="mt-2 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
-              {project.location}
-            </p>
-            <p className="mt-1 text-base italic text-yellow-200/80 sm:text-lg">
-              &quot;{project.tagline}&quot;
-            </p>
+            {project.location && (
+              <p className="mt-2 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
+                {project.location}
+              </p>
+            )}
+            {project.tagline && (
+              <p className="mt-1 text-base italic text-yellow-200/80 sm:text-lg">
+                &quot;{project.tagline}&quot;
+              </p>
+            )}
 
             <div className="mt-6 grid max-w-4xl gap-4 sm:grid-cols-3">
               <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
@@ -88,24 +92,26 @@ export default function Hero({ project }: HeroProps) {
               </div>
             </div>
 
-            <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
-              {project.chips.map((chip: string) => {
-                let icon = "";
-                if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "🚇 ";
-                else if (chip.toLowerCase().includes("orr") || chip.toLowerCase().includes("road")) icon = "📍 ";
-                else if (chip.toLowerCase().includes("sq.ft") || chip.toLowerCase().includes("market")) icon = "✨ ";
-                else if (chip.toLowerCase().includes("arch") || chip.toLowerCase().includes("community") || chip.toLowerCase().includes("appreciation")) icon = "🏛️ ";
-                
-                return (
-                  <span
-                    key={chip}
-                    className="rounded-full border border-emerald-400/30 bg-emerald-900/50 px-4 py-2 text-emerald-100 backdrop-blur-sm"
-                  >
-                    {icon}{chip}
-                  </span>
-                );
-              })}
-            </div>
+            {project.chips.length > 0 && (
+              <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
+                {project.chips.map((chip: string) => {
+                  let icon = "";
+                  if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "🚇 ";
+                  else if (chip.toLowerCase().includes("orr") || chip.toLowerCase().includes("road")) icon = "📍 ";
+                  else if (chip.toLowerCase().includes("sq.ft") || chip.toLowerCase().includes("market")) icon = "✨ ";
+                  else if (chip.toLowerCase().includes("arch") || chip.toLowerCase().includes("community") || chip.toLowerCase().includes("appreciation")) icon = "🏛️ ";
+                  
+                  return (
+                    <span
+                      key={chip}
+                      className="rounded-full border border-emerald-400/30 bg-emerald-900/50 px-4 py-2 text-emerald-100 backdrop-blur-sm"
+                    >
+                      {icon}{chip}
+                    </span>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
