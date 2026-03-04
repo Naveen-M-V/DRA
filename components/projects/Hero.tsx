@@ -3,7 +3,7 @@
 import Script from "next/script";
 import Image from "next/image";
 import EmailVerificationGate from "../EmailVerificationGate";
-import securaLogo from "@/lib/dra-secura-2.svg";
+import securaLogo from "@/lib/Secura.png";
 import inaraLogo from "@/lib/dra-inara.svg";
 import repImage from "@/lib/RM1037-2.png";
 import plotTexture from "@/lib/plot-texture.png";
@@ -43,7 +43,7 @@ export default function Hero({ project }: HeroProps) {
               />
               <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-yellow-300 shadow-sm">
                 <span>🚀</span>
-                Launching Soon
+                Launching
               </span>
             </div>
 
