@@ -36,9 +36,9 @@ export default function Hero({ project }: HeroProps) {
               <Image
                 src={projectLogo}
                 alt={`${project.name} logo`}
-                width={160}
-                height={55}
-                className="h-auto w-[120px] sm:w-[140px] md:w-[160px]"
+                width={200}
+                height={70}
+                className="h-auto w-[160px] sm:w-[180px] md:w-[200px]"
                 priority
               />
               <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-yellow-300 shadow-sm">
@@ -67,7 +67,7 @@ export default function Hero({ project }: HeroProps) {
                 <p className="text-xl font-black leading-none text-white sm:text-2xl">
                   {project.launchPrice}
                 </p>
-                <p className="text-[10px] opacity-60">/sq.ft</p>
+                {project.slug !== "inara" && <p className="text-[10px] opacity-60">/sq.ft</p>}
               </div>
               <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
                 <p className="text-[10px] font-bold uppercase tracking-wide text-yellow-300 sm:text-xs">
@@ -76,16 +76,16 @@ export default function Hero({ project }: HeroProps) {
                 <p className="text-xl font-black leading-none text-white sm:text-2xl">
                   {project.postLaunchPrice}
                 </p>
-                <p className="text-[10px] opacity-60">/sq.ft</p>
+                {project.slug !== "inara" && <p className="text-[10px] opacity-60">/sq.ft</p>}
               </div>
               <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
                 <p className="text-[10px] font-bold uppercase tracking-wide text-yellow-300 sm:text-xs">
-                  Save Up To
+                  {project.slug === "inara" ? "Ready to" : "Save Up To"}
                 </p>
                 <p className="text-xl font-black leading-none text-white sm:text-2xl">
-                  ₹5 Lakhs*
+                  {project.slug === "inara" ? "Occupy" : "₹5 Lakhs*"}
                 </p>
-                <p className="text-[10px] opacity-60">Limited Time</p>
+                {project.slug !== "inara" && <p className="text-[10px] opacity-60">Limited Time</p>}
               </div>
             </div>
 
