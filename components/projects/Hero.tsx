@@ -29,20 +29,19 @@ export default function Hero({ project }: HeroProps) {
       />
       <div className="absolute inset-0 bg-gradient-to-r from-[#062f27]/95 via-[#0a4a3b]/80 to-[#062f27]/95" />
 
-      <div className="relative mx-auto grid h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-8 px-4 py-12 pb-0 md:grid-cols-2 md:px-8 md:pb-0 lg:grid-cols-[2fr_1.5fr_1.5fr] lg:gap-4 lg:px-12 lg:pb-0">
+      <div className="relative mx-auto grid h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-6 px-4 py-8 pb-0 sm:px-6 sm:py-10 md:grid-cols-2 md:gap-8 md:px-8 md:pb-0 lg:grid-cols-[2fr_1.2fr_1.5fr] lg:gap-6 lg:px-12 lg:pb-0 xl:grid-cols-[2fr_1.3fr_1.5fr]">
         <div className="flex flex-col justify-center lg:col-span-1">
           <div className="max-w-3xl">
             <div className="mb-6 flex flex-col items-start gap-4">
               <Image
                 src={projectLogo}
                 alt={`${project.name} logo`}
-                width={350}
-                height={130}
-                className="h-auto w-[280px] sm:w-[320px] md:w-[350px]"
+                width={280}
+                height={100}
+                className="h-auto w-[220px] sm:w-[250px] md:w-[280px]"
                 priority
               />
               <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-yellow-300 shadow-sm">
-                <span>🚀</span>
                 Launching
               </span>
             </div>
@@ -94,34 +93,26 @@ export default function Hero({ project }: HeroProps) {
 
             {project.chips.length > 0 && (
               <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
-                {project.chips.map((chip: string) => {
-                  let icon = "";
-                  if (chip.toLowerCase().includes("metro") || chip.toLowerCase().includes("connectivity")) icon = "🚇 ";
-                  else if (chip.toLowerCase().includes("orr") || chip.toLowerCase().includes("road")) icon = "📍 ";
-                  else if (chip.toLowerCase().includes("sq.ft") || chip.toLowerCase().includes("market")) icon = "✨ ";
-                  else if (chip.toLowerCase().includes("arch") || chip.toLowerCase().includes("community") || chip.toLowerCase().includes("appreciation")) icon = "🏛️ ";
-                  
-                  return (
-                    <span
-                      key={chip}
-                      className="rounded-full border border-emerald-400/30 bg-emerald-900/50 px-4 py-2 text-emerald-100 backdrop-blur-sm"
-                    >
-                      {icon}{chip}
-                    </span>
-                  );
-                })}
+                {project.chips.map((chip: string) => (
+                  <span
+                    key={chip}
+                    className="rounded-full border border-emerald-400/30 bg-emerald-900/50 px-4 py-2 text-emerald-100 backdrop-blur-sm"
+                  >
+                    {chip}
+                  </span>
+                ))}
               </div>
             )}
           </div>
         </div>
 
-        <div className="pointer-events-none hidden items-end self-end lg:flex">
+        <div className="pointer-events-none hidden items-end self-end lg:flex lg:h-full">
           <Image
             src={repImage}
             alt="DRA Representative"
-            width={1000}
-            height={2000}
-            className="h-auto w-full"
+            width={1200}
+            height={2400}
+            className="h-full w-auto max-w-none object-cover object-bottom"
             priority
           />
         </div>

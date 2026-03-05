@@ -198,6 +198,33 @@ export default function EmailVerificationGate({
           script.setAttribute('data-form-id', '${formId}');
           script.async = true;
           container.appendChild(script);
+          
+          // Track form submission with Meta Pixel
+          var checkInterval = setInterval(function() {
+            var thankYouMessage = container.querySelector('.thank-you-message, .success-message, [class*="thank"], [class*="success"]');
+            var submitButton = container.querySelector('button[type="submit"], input[type="submit"]');
+            
+            if (thankYouMessage && thankYouMessage.style.display !== 'none') {
+              if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead');
+              }
+              clearInterval(checkInterval);
+            } else if (submitButton) {
+              submitButton.addEventListener('click', function() {
+                setTimeout(function() {
+                  if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead');
+                  }
+                }, 2000);
+              });
+              clearInterval(checkInterval);
+            }
+          }, 500);
+          
+          // Clear interval after 30 seconds
+          setTimeout(function() {
+            clearInterval(checkInterval);
+          }, 30000);
         })();`}
       </Script>
     </div>
