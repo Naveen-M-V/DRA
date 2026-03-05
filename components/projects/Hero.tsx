@@ -1,6 +1,5 @@
 "use client";
 
-import Script from "next/script";
 import Image from "next/image";
 import EmailVerificationGate from "../EmailVerificationGate";
 import securaLogo from "@/lib/Secura.png";
@@ -15,117 +14,153 @@ type HeroProps = {
 
 export default function Hero({ project }: HeroProps) {
   const projectLogo = project.slug === "inara" ? inaraLogo : securaLogo;
+  const isInara = project.slug === "inara";
 
   return (
-    <section className="relative h-[100svh] overflow-hidden bg-[#073a2f] text-white">
+    <section className="relative h-[100svh] w-full overflow-hidden bg-[#062f27] text-white">
+
+      {/* ── Layer 0: Background Texture ── */}
       <div
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-[0.15]"
         style={{
           backgroundImage: `url(${plotTexture.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "grayscale(0.5) brightness(0.8)",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#062f27]/95 via-[#0a4a3b]/80 to-[#062f27]/95" />
 
-      <div className="relative mx-auto grid h-[100svh] max-w-screen-2xl grid-cols-1 items-center gap-6 px-4 py-8 pb-0 sm:px-6 sm:py-10 md:grid-cols-2 md:gap-8 md:px-8 md:pb-0 lg:grid-cols-[2fr_1.2fr_1.5fr] lg:gap-6 lg:px-12 lg:pb-0 xl:grid-cols-[2fr_1.3fr_1.5fr]">
-        <div className="flex flex-col justify-center lg:col-span-1">
-          <div className="max-w-3xl">
-            <div className="mb-6 flex flex-col items-start gap-4">
-              <Image
-                src={projectLogo}
-                alt={`${project.name} logo`}
-                width={280}
-                height={100}
-                className="h-auto w-[220px] sm:w-[250px] md:w-[280px]"
-                priority
-              />
-              <span className="inline-flex items-center gap-2 rounded-full border border-yellow-500/40 bg-yellow-500/20 px-4 py-1.5 text-sm font-semibold uppercase tracking-wider text-yellow-300 shadow-sm">
-                Launching
-              </span>
+      {/* ── Layer 1: Directional Gradients ──
+          Left  → keeps left-column text readable
+          Right → keeps right-column form readable
+          Top   → softens the very top edge
+          Bottom→ grounds the model's feet                */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-[1] w-3/5 bg-gradient-to-r from-[#062f27] via-[#062f27]/75 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-3/5 bg-gradient-to-l from-[#062f27] via-[#062f27]/75 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-36 bg-gradient-to-b from-[#062f27] to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-24 bg-gradient-to-t from-black/55 to-transparent" />
+
+      {/* ── Layer 2: Model — perfectly centered, bottom-anchored ──
+          pointer-events-none so nothing blocks the form              */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] flex justify-center">
+        <div className="relative h-[85svh] w-[260px] sm:w-[340px] md:w-[400px] lg:w-[460px] xl:w-[520px]">
+          <Image
+            src={repImage}
+            alt="DRA Sales Representative"
+            fill
+            className="object-contain object-bottom"
+            priority
+            sizes="(max-width: 640px) 260px, (max-width: 768px) 340px, (max-width: 1024px) 400px, (max-width: 1280px) 460px, 520px"
+          />
+        </div>
+      </div>
+
+      {/* ── Layer 3: Main Content ──
+          flex-col on mobile, flex-row on md+               */}
+      <div className="relative z-[3] flex h-full w-full flex-col md:flex-row">
+
+        {/* Left Column — Brand & Info */}
+        <div className="flex w-full shrink-0 flex-col justify-start px-5 pt-7
+                        md:w-[42%] md:justify-center md:px-10 md:pt-0
+                        lg:w-[38%] lg:px-14
+                        xl:px-20">
+
+          {/* Logo */}
+          <Image
+            src={projectLogo}
+            alt={`${project.name} logo`}
+            width={350}
+            height={120}
+            className="h-auto w-[160px] sm:w-[210px] md:w-[260px] lg:w-[310px] xl:w-[350px]"
+            priority
+          />
+
+          {/* Launching badge */}
+          <div className="mt-4 mb-5 md:mt-5 md:mb-7">
+            <span className="inline-flex items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-[10px]">
+              Launching
+            </span>
+          </div>
+
+          {/* Headline */}
+          <h1 className="font-serif text-[1.55rem] font-extrabold leading-tight tracking-tight
+                         sm:text-3xl
+                         md:text-[1.75rem]
+                         lg:text-[2.1rem]
+                         xl:text-5xl">
+            {isInara ? (
+              <>
+                COME HOME TO
+                <br />
+                <span className="text-yellow-400">QUIET LUXURY!</span>
+              </>
+            ) : (
+              <>
+                Plots with{" "}
+                <span className="text-yellow-400">LOTS!</span>
+              </>
+            )}
+          </h1>
+
+          {project.location && (
+            <p className="mt-2 text-[11px] font-medium text-white/65 sm:text-sm md:text-[11px] lg:text-sm xl:text-base">
+              {project.location}
+            </p>
+          )}
+
+          {/* Info cards */}
+          <div className="mt-5 grid grid-cols-3 gap-2 md:mt-6 lg:gap-3">
+
+            {/* Card 1 */}
+            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md md:py-3.5">
+              <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">
+                {isInara ? "Luxury 4 BHK" : "Launch Price"}
+              </p>
+              <p className="mt-1 text-[12px] font-black text-white sm:text-sm md:text-[11px] lg:text-sm xl:text-base">
+                {isInara ? "Villas" : project.launchPrice}
+              </p>
             </div>
 
-            <h1 className="font-serif-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl">
-              {project.headline.split("LOTS")[0]}
-              {project.slug !== "inara" && <span className="text-yellow-400">LOTS!</span>}
-            </h1>
-
-            {project.location && (
-              <p className="mt-2 max-w-2xl text-lg text-white/80 sm:text-xl md:text-2xl">
-                {project.location}
+            {/* Card 2 */}
+            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md md:py-3.5">
+              <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">
+                {isInara ? "Starting From" : "Post Launch"}
               </p>
-            )}
-            {project.tagline && (
-              <p className="mt-1 text-base italic text-yellow-200/80 sm:text-lg">
-                &quot;{project.tagline}&quot;
+              <p className="mt-1 text-[12px] font-black text-white sm:text-sm md:text-[11px] lg:text-sm xl:text-base">
+                {isInara ? "₹2.90 Cr" : project.postLaunchPrice}
               </p>
-            )}
-
-            <div className="mt-6 grid max-w-4xl gap-4 sm:grid-cols-3">
-              <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
-                <p className="text-[10px] font-bold uppercase tracking-wide text-yellow-300 sm:text-xs">
-                  {project.slug === "inara" ? "Luxury 4 BHK Villas" : "Launch Price"}
-                </p>
-                <p className="text-xl font-black leading-none text-white sm:text-2xl">
-                  {project.launchPrice}
-                </p>
-                {project.slug !== "inara" && <p className="text-[10px] opacity-60">/sq.ft</p>}
-              </div>
-              <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
-                <p className="text-xl font-black leading-none text-white sm:text-2xl">
-                  {project.slug === "inara" ? "₹2.90 Cr" : project.postLaunchPrice}
-                </p>
-                <p className="text-[10px] {project.slug === 'inara' ? 'opacity-90' : 'opacity-60'}">
-                  {project.slug === "inara" ? project.postLaunchPrice : "/sq.ft"}
-                </p>
-              </div>
-              <div className="flex min-h-[110px] flex-col items-center justify-center gap-1.5 rounded-xl border border-yellow-600/50 bg-yellow-500/10 px-3 py-4 text-center shadow-lg backdrop-blur-sm">
-                <p className="text-[10px] font-bold uppercase tracking-wide text-yellow-300 sm:text-xs">
-                  {project.slug === "inara" ? "Ready to" : "Save Up To"}
-                </p>
-                <p className="text-xl font-black leading-none text-white sm:text-2xl">
-                  {project.slug === "inara" ? project.savings : "₹5 Lakhs*"}
-                </p>
-                {project.slug !== "inara" && <p className="text-[10px] opacity-60">Limited Time</p>}
-              </div>
             </div>
 
-            {project.chips.length > 0 && (
-              <div className="mt-6 flex flex-wrap gap-3 text-sm font-medium">
-                {project.chips.map((chip: string) => (
-                  <span
-                    key={chip}
-                    className="rounded-full border border-emerald-400/30 bg-emerald-900/50 px-4 py-2 text-emerald-100 backdrop-blur-sm"
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* Card 3 */}
+            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md md:py-3.5">
+              <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">
+                {isInara ? "Possession" : "Save Up To"}
+              </p>
+              <p className="mt-1 text-[12px] font-black text-white sm:text-sm md:text-[11px] lg:text-sm xl:text-base">
+                {isInara ? "Ready to Move" : project.savings}
+              </p>
+            </div>
+
           </div>
         </div>
 
-        <div className="pointer-events-none hidden items-end self-end lg:flex lg:h-full">
-          <Image
-            src={repImage}
-            alt="DRA Representative"
-            width={1200}
-            height={2400}
-            className="h-full w-auto max-w-none object-cover object-bottom"
-            priority
-          />
+        {/* Right Column — Form pushed to far right */}
+        <div className="flex flex-1 items-end justify-center pb-5
+                        md:items-center md:justify-end md:pr-8
+                        lg:pr-14
+                        xl:pr-20">
+          <div className="relative z-[10] w-full max-w-[310px] sm:max-w-[360px] md:max-w-[320px] lg:max-w-[360px] xl:max-w-[380px]">
+            <div className="rounded-2xl border border-white/10 bg-[#062f27]/80 p-1 shadow-2xl backdrop-blur-2xl">
+              <EmailVerificationGate
+                formId={project.formId}
+                projectName={project.name}
+                srd={project.srd}
+                campaignName={project.campaignName}
+                source={project.source}
+              />
+            </div>
+          </div>
         </div>
 
-        <aside className="relative z-10 flex w-full items-center justify-center md:col-start-2 lg:col-start-3">
-          <EmailVerificationGate
-            formId={project.formId}
-            projectName={project.name}
-            srd={project.srd}
-            campaignName={project.campaignName}
-            source={project.source}
-          />
-        </aside>
       </div>
     </section>
   );
