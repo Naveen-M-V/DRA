@@ -13,6 +13,7 @@ export type ProjectContent = {
   savings: string;
   tagline: string;
   chips: string[];
+  pixelId: string;
 };
 
 export const projects: Record<string, ProjectContent> = {
@@ -36,6 +37,7 @@ export const projects: Record<string, ProjectContent> = {
       "1143 - 2372 Sq.ft",
       "Grand Entrance Arch",
     ],
+    pixelId: "1852333405356715",
   },
   inara: {
     slug: "inara",
@@ -52,6 +54,7 @@ export const projects: Record<string, ProjectContent> = {
     savings: "Occupy",
     tagline: "",
     chips: [],
+    pixelId: "1852333405356715",
   },
   securari: {
     slug: "securari",
@@ -73,6 +76,7 @@ export const projects: Record<string, ProjectContent> = {
       "1143 - 2372 Sq.ft",
       "Grand Entrance Arch",
     ],
+    pixelId: "25670356619305148",
   },
 };
 

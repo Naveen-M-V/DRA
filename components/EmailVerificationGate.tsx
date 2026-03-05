@@ -9,6 +9,7 @@ type EmailVerificationGateProps = {
   srd: string;
   campaignName: string;
   source?: string;
+  pixelId: string;
 };
 
 export default function EmailVerificationGate({
@@ -17,6 +18,7 @@ export default function EmailVerificationGate({
   srd,
   campaignName,
   source,
+  pixelId,
 }: EmailVerificationGateProps) {
   const [step, setStep] = useState<"email" | "code" | "verified">("email");
   const [email, setEmail] = useState("");
@@ -94,7 +96,7 @@ export default function EmailVerificationGate({
     return (
       <div className="w-full max-w-[450px] rounded-2xl border border-yellow-500/30 bg-[#073126]/95 p-5 shadow-2xl backdrop-blur lg:max-w-[400px]">
         <h2 className="text-center text-xl font-bold font-serif-display sm:text-2xl xl:text-3xl">
-          Verify Email First
+          Get Priority Access
         </h2>
         <div className="mx-auto mt-2 h-1 w-16 rounded bg-[#FFB800] sm:mt-3 sm:w-20" />
 
@@ -193,38 +195,57 @@ export default function EmailVerificationGate({
           var container = document.getElementById('sell-do-form-${formId}');
           if (!container) return;
           container.innerHTML = '';
+
+          // Load the Sell.do form
           var script = document.createElement('script');
           script.src = 'https://forms.cdn.sell.do/t/forms/5ba883447c0dac3321d9f483/${formId}.js';
           script.setAttribute('data-form-id', '${formId}');
           script.async = true;
           container.appendChild(script);
-          
-          // Track form submission with Meta Pixel
-          var checkInterval = setInterval(function() {
-            var thankYouMessage = container.querySelector('.thank-you-message, .success-message, [class*="thank"], [class*="success"]');
-            var submitButton = container.querySelector('button[type="submit"], input[type="submit"]');
-            
-            if (thankYouMessage && thankYouMessage.style.display !== 'none') {
-              if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead');
-              }
-              clearInterval(checkInterval);
-            } else if (submitButton) {
-              submitButton.addEventListener('click', function() {
-                setTimeout(function() {
-                  if (typeof fbq !== 'undefined') {
-                    fbq('track', 'Lead');
-                  }
-                }, 2000);
-              });
-              clearInterval(checkInterval);
+
+          // Fire Meta Pixel Lead event — only once, only on real form success.
+          // Uses MutationObserver so it reacts to DOM changes (not a timed guess).
+          var leadFired = false;
+          function fireLeadEvent() {
+            if (leadFired) return;
+            leadFired = true;
+            if (typeof fbq !== 'undefined') {
+              fbq('trackSingle', '${pixelId}', 'Lead');
             }
-          }, 500);
-          
-          // Clear interval after 30 seconds
-          setTimeout(function() {
-            clearInterval(checkInterval);
-          }, 30000);
+          }
+
+          var observer = new MutationObserver(function() {
+            // Check for Sell.do success/thank-you elements by common class names
+            var successEl = container.querySelector(
+              '.thank-you-message, .success-message, .thankyou-message, .sell-do-success'
+            );
+            if (successEl) {
+              fireLeadEvent();
+              observer.disconnect();
+              return;
+            }
+            // Fallback: scan visible text nodes for the phrase "thank you"
+            var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+            var node;
+            while ((node = walker.nextNode())) {
+              if (node.textContent && node.textContent.toLowerCase().indexOf('thank you') !== -1) {
+                fireLeadEvent();
+                observer.disconnect();
+                return;
+              }
+            }
+          });
+
+          // Watch for any DOM or style/class changes inside the form container
+          observer.observe(container, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['style', 'class']
+          });
+
+          // Safety disconnect after 10 minutes to prevent memory leaks
+          setTimeout(function() { observer.disconnect(); }, 600000);
         })();`}
       </Script>
     </div>

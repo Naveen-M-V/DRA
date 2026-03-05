@@ -1,5 +1,6 @@
 "use client";
 
+import Script from "next/script";
 import Image from "next/image";
 import EmailVerificationGate from "../EmailVerificationGate";
 import securaLogo from "@/lib/Secura.png";
@@ -74,12 +75,15 @@ export default function Hero({ project }: HeroProps) {
             priority
           />
 
-          {/* Launching badge */}
-          <div className="mt-4 mb-5 md:mt-5 md:mb-7">
-            <span className="inline-flex items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-[10px]">
-              Launching
-            </span>
-          </div>
+          {/* Launching badge — hidden for Inara (already launched / occupied) */}
+          {!isInara && (
+            <div className="mt-4 mb-5 md:mt-5 md:mb-7">
+              <span className="inline-flex items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-[10px]">
+                Launching
+              </span>
+            </div>
+          )}
+          {isInara && <div className="mt-4 mb-5 md:mt-5 md:mb-7" />}
 
           {/* Headline */}
           <h1 className="font-serif text-[1.55rem] font-extrabold leading-tight tracking-tight
@@ -156,12 +160,35 @@ export default function Hero({ project }: HeroProps) {
                 srd={project.srd}
                 campaignName={project.campaignName}
                 source={project.source}
+                pixelId={project.pixelId}
               />
             </div>
           </div>
         </div>
 
       </div>
+
+      {/* Per-project Meta Pixel — fully self-contained: stub + async lib + init + PageView.
+          The if(f.fbq)return guard prevents double-loading on client-side navigation. */}
+      <Script
+        id={`meta-pixel-${project.slug}`}
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window,document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '${project.pixelId}');
+            fbq('track', 'PageView');
+          `,
+        }}
+      />
+
     </section>
   );
 }
