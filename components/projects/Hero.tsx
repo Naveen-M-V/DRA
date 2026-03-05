@@ -3,7 +3,7 @@
 import Script from "next/script";
 import Image from "next/image";
 import EmailVerificationGate from "../EmailVerificationGate";
-import securaLogo from "@/lib/Secura.png";
+import securaLogo from "@/lib/Secura.jpg.jpeg";
 import inaraLogo from "@/lib/dra-inara.svg";
 import repImage from "@/lib/RM1037-2.png";
 import plotTexture from "@/lib/plot-texture.png";
@@ -60,30 +60,27 @@ export default function Hero({ project }: HeroProps) {
       <div className="relative z-[3] flex h-full w-full flex-col md:flex-row">
 
         {/* Left Column — Brand & Info */}
-        <div className="flex w-full shrink-0 flex-col justify-start px-5 pt-7
-                        md:w-[42%] md:justify-center md:px-10 md:pt-0
+        <div className="flex w-full shrink-0 flex-col justify-center px-5 pt-20
+                        md:w-[42%] md:px-10 md:pt-0
                         lg:w-[38%] lg:px-14
                         xl:px-20">
 
-          {/* Logo */}
+          {/* Launching chip — Secura only, sits above the logo */}
+          {!isInara && (
+            <span className="mb-3 inline-flex w-fit items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-3.5 py-1 text-[8px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-[9px]">
+              Launching
+            </span>
+          )}
+
+          {/* Logo — sits just above the headline */}
           <Image
             src={projectLogo}
             alt={`${project.name} logo`}
-            width={350}
-            height={120}
-            className="h-auto w-[160px] sm:w-[210px] md:w-[260px] lg:w-[310px] xl:w-[350px]"
+            width={240}
+            height={80}
+            className="mb-5 h-auto w-[160px] sm:w-[190px] md:w-[200px] lg:w-[220px] xl:w-[240px]"
             priority
           />
-
-          {/* Launching badge — hidden for Inara (already launched / occupied) */}
-          {!isInara && (
-            <div className="mt-4 mb-5 md:mt-5 md:mb-7">
-              <span className="inline-flex items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-4 py-1.5 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-[10px]">
-                Launching
-              </span>
-            </div>
-          )}
-          {isInara && <div className="mt-4 mb-5 md:mt-5 md:mb-7" />}
 
           {/* Headline */}
           <h1 className="font-serif text-[1.55rem] font-extrabold leading-tight tracking-tight
