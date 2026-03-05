@@ -80,7 +80,7 @@ export default function Hero({ project }: HeroProps) {
           {/* Headline */}
           <h1 className="font-serif text-[1.7rem] font-extrabold leading-tight tracking-tight sm:text-3xl">
             {isInara ? (
-              <>COME HOME TO<br /><span className="text-yellow-400">QUIET LUXURY!</span></>
+              <>STEP IN TO<br /><span className="text-yellow-400">LUXURY VILLA LIFE</span></>
             ) : (
               <>Plots with <span className="text-yellow-400">LOTS!</span></>
             )}
@@ -99,6 +99,7 @@ export default function Hero({ project }: HeroProps) {
             <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
               <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">{isInara ? "Starting From" : "Post Launch"}</p>
               <p className="mt-1 text-[12px] font-black text-white sm:text-sm">{isInara ? "₹2.90 Cr" : project.postLaunchPrice}</p>
+              {isInara && <p className="mt-0.5 text-[7px] font-medium uppercase tracking-wide text-white/50 sm:text-[8px]">All Incl. + Govt. Levies</p>}
             </div>
             <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
               <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">{isInara ? "Possession" : "Save Up To"}</p>
@@ -160,7 +161,7 @@ export default function Hero({ project }: HeroProps) {
           />
           <h1 className="font-serif text-[1.75rem] font-extrabold leading-tight tracking-tight lg:text-[2.1rem] xl:text-5xl">
             {isInara ? (
-              <>COME HOME TO<br /><span className="text-yellow-400">QUIET LUXURY!</span></>
+              <>STEP IN TO<br /><span className="text-yellow-400">LUXURY VILLA LIFE</span></>
             ) : (
               <>Plots with <span className="text-yellow-400">LOTS!</span></>
             )}
@@ -178,6 +179,7 @@ export default function Hero({ project }: HeroProps) {
             <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
               <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">{isInara ? "Starting From" : "Post Launch"}</p>
               <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">{isInara ? "₹2.90 Cr" : project.postLaunchPrice}</p>
+              {isInara && <p className="mt-0.5 text-[8px] font-medium uppercase tracking-wide text-white/50">All Incl. + Govt. Levies</p>}
             </div>
             <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
               <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">{isInara ? "Possession" : "Save Up To"}</p>
