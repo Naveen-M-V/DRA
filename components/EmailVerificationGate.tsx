@@ -26,6 +26,7 @@ export default function EmailVerificationGate({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [consentChecked, setConsentChecked] = useState(false);
 
   const handleSendCode = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -96,7 +97,7 @@ export default function EmailVerificationGate({
     return (
       <div className="w-full max-w-[450px] rounded-2xl border border-yellow-500/30 bg-[#073126]/95 p-5 shadow-2xl backdrop-blur lg:max-w-[400px]">
         <h2 className="text-center text-xl font-bold font-serif-display sm:text-2xl xl:text-3xl">
-          Get Priority Access
+          Enquire Now
         </h2>
         <div className="mx-auto mt-2 h-1 w-16 rounded bg-[#FFB800] sm:mt-3 sm:w-20" />
 
@@ -185,16 +186,57 @@ export default function EmailVerificationGate({
   return (
     <div className="w-full max-w-[450px] rounded-2xl border border-yellow-500/30 bg-[#073126]/95 p-5 shadow-2xl backdrop-blur lg:max-w-[400px]">
       <h2 className="text-center text-xl font-bold font-serif-display sm:text-2xl xl:text-3xl">
-        Get Launch Price Details
+        Enquire Now
       </h2>
       <div className="mx-auto mt-2 h-1 w-16 rounded bg-[#FFB800] sm:mt-3 sm:w-20" />
 
+      {/* Sell.do form — submit button disabled until consent is ticked */}
       <div id={`sell-do-form-${formId}`} className="mt-4 sm:mt-6" />
+
+      {/* Consent checkbox — must be ticked before submit is enabled */}
+      <label className="mt-4 flex cursor-pointer items-start gap-2.5">
+        <input
+          type="checkbox"
+          checked={consentChecked}
+          onChange={(e) => {
+            const checked = e.target.checked;
+            setConsentChecked(checked);
+            // Directly enable / disable the Sell.do submit button
+            const container = document.getElementById(`sell-do-form-${formId}`);
+            const btn = container?.querySelector<HTMLButtonElement>(
+              'button[type="submit"], input[type="submit"], button.submit'
+            );
+            if (btn) {
+              btn.disabled = !checked;
+              btn.style.opacity = checked ? "1" : "0.4";
+              btn.style.cursor = checked ? "pointer" : "not-allowed";
+            }
+          }}
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-yellow-400"
+        />
+        <span className="text-[10px] leading-snug text-white/55">
+          By pressing submit, I authorize DRA Homes and its representatives to call, SMS, RCS,
+          email, or WhatsApp me about its products and offers. This consent overrides any
+          registration for DNC/NDNC.
+        </span>
+      </label>
+
       <Script id={`sell-do-embed-${formId}`} strategy="afterInteractive">
         {`(function(){
           var container = document.getElementById('sell-do-form-${formId}');
           if (!container) return;
           container.innerHTML = '';
+
+          // Inject CSS to hide the project title Sell.do renders inside the form
+          var style = document.createElement('style');
+          style.textContent = [
+            '#sell-do-form-${formId} h1',
+            '#sell-do-form-${formId} h2.form-title',
+            '#sell-do-form-${formId} .form-title',
+            '#sell-do-form-${formId} .project-title',
+            '#sell-do-form-${formId} .campaign-title'
+          ].join(',') + '{ display:none !important; }';
+          document.head.appendChild(style);
 
           // Load the Sell.do form
           var script = document.createElement('script');
@@ -203,8 +245,20 @@ export default function EmailVerificationGate({
           script.async = true;
           container.appendChild(script);
 
+          // Disable the submit button as soon as it appears (consent not yet given)
+          var submitObserver = new MutationObserver(function() {
+            var btn = container.querySelector('button[type="submit"], input[type="submit"], button.submit');
+            if (btn && !btn.dataset.consentControlled) {
+              btn.disabled = true;
+              btn.style.opacity = '0.4';
+              btn.style.cursor = 'not-allowed';
+              btn.dataset.consentControlled = 'true';
+            }
+          });
+          submitObserver.observe(container, { childList: true, subtree: true });
+          setTimeout(function() { submitObserver.disconnect(); }, 60000);
+
           // Fire Meta Pixel Lead event — only once, only on real form success.
-          // Uses MutationObserver so it reacts to DOM changes (not a timed guess).
           var leadFired = false;
           function fireLeadEvent() {
             if (leadFired) return;
@@ -215,7 +269,6 @@ export default function EmailVerificationGate({
           }
 
           var observer = new MutationObserver(function() {
-            // Check for Sell.do success/thank-you elements by common class names
             var successEl = container.querySelector(
               '.thank-you-message, .success-message, .thankyou-message, .sell-do-success'
             );
@@ -224,7 +277,6 @@ export default function EmailVerificationGate({
               observer.disconnect();
               return;
             }
-            // Fallback: scan visible text nodes for the phrase "thank you"
             var walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
             var node;
             while ((node = walker.nextNode())) {
@@ -236,7 +288,6 @@ export default function EmailVerificationGate({
             }
           });
 
-          // Watch for any DOM or style/class changes inside the form container
           observer.observe(container, {
             childList: true,
             subtree: true,
@@ -244,7 +295,6 @@ export default function EmailVerificationGate({
             attributeFilter: ['style', 'class']
           });
 
-          // Safety disconnect after 10 minutes to prevent memory leaks
           setTimeout(function() { observer.disconnect(); }, 600000);
         })();`}
       </Script>

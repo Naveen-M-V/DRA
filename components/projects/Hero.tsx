@@ -64,7 +64,7 @@ export default function Hero({ project }: HeroProps) {
         <div className="relative z-[3] px-5 pb-8 pt-2">
           {/* Launching chip */}
           {!isInara && (
-            <span className="mb-3 inline-flex w-fit items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-3.5 py-1 text-[8px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-[9px]">
+            <span className="mb-4 inline-flex w-fit items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm sm:text-sm">
               Launching
             </span>
           )}
@@ -146,7 +146,7 @@ export default function Hero({ project }: HeroProps) {
         {/* Left Column */}
         <div className="flex w-[38%] shrink-0 flex-col justify-center px-14 xl:px-20">
           {!isInara && (
-            <span className="mb-3 inline-flex w-fit items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-3.5 py-1 text-[9px] font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm">
+            <span className="mb-4 inline-flex w-fit items-center rounded-full border border-yellow-500/50 bg-yellow-500/15 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-yellow-300 backdrop-blur-sm lg:text-sm">
               Launching
             </span>
           )}
