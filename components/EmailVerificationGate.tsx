@@ -186,7 +186,7 @@ export default function EmailVerificationGate({
   return (
     <div className="w-full max-w-[450px] rounded-2xl border border-yellow-500/30 bg-[#073126]/95 p-5 shadow-2xl backdrop-blur lg:max-w-[400px]">
       <h2 className="text-center text-xl font-bold font-serif-display sm:text-2xl xl:text-3xl">
-        Enquire Now
+        Get Launch Price Details
       </h2>
       <div className="mx-auto mt-2 h-1 w-16 rounded bg-[#FFB800] sm:mt-3 sm:w-20" />
 
@@ -227,16 +227,25 @@ export default function EmailVerificationGate({
           if (!container) return;
           container.innerHTML = '';
 
-          // Inject CSS to hide the project title Sell.do renders inside the form
-          var style = document.createElement('style');
-          style.textContent = [
-            '#sell-do-form-${formId} h1',
-            '#sell-do-form-${formId} h2.form-title',
-            '#sell-do-form-${formId} .form-title',
-            '#sell-do-form-${formId} .project-title',
-            '#sell-do-form-${formId} .campaign-title'
-          ].join(',') + '{ display:none !important; }';
-          document.head.appendChild(style);
+          // Hide the project/campaign title Sell.do injects at the top of the form.
+          // We use a MutationObserver so it catches the node no matter what tag or
+          // class name Sell.do uses — we simply look for the first text-bearing
+          // element whose content matches the known project name patterns.
+          var titleObserver = new MutationObserver(function() {
+            var projectNames = ['dra secura', 'dra inara', 'dra securari', 'secura', 'inara', 'securari'];
+            var candidates = container.querySelectorAll('h1, h2, h3, h4, p, div, span, label');
+            candidates.forEach(function(el) {
+              var text = (el.textContent || '').trim().toLowerCase();
+              var isTitle = projectNames.some(function(name) { return text === name || text.startsWith(name + ' ') || text.endsWith(' ' + name); });
+              // Only hide leaf-like elements (no nested form fields) to avoid nuking the whole form
+              if (isTitle && el.children.length === 0) {
+                el.style.setProperty('display', 'none', 'important');
+              }
+            });
+          });
+          titleObserver.observe(container, { childList: true, subtree: true });
+          // Disconnect after 10 s — the title appears once on form render
+          setTimeout(function() { titleObserver.disconnect(); }, 10000);
 
           // Load the Sell.do form
           var script = document.createElement('script');
