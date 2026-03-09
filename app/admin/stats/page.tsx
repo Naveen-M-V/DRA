@@ -18,6 +18,8 @@ export default function StatsPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [stats, setStats] = useState<any>(null);
+  const [expandedCampaign, setExpandedCampaign] = useState<string | null>(null);
+  const [campaignLeads, setCampaignLeads] = useState<Record<string, Lead[]>>({});
 
   useEffect(() => {
     // Check if already authenticated in session storage
@@ -35,6 +37,23 @@ export default function StatsPage() {
       setStats(data);
     } catch (err) {
       console.error("Failed to fetch stats:", err);
+    }
+  };
+
+  const fetchCampaignLeads = async (campaign: string) => {
+    if (campaignLeads[campaign]) {
+      // Already fetched, just toggle
+      setExpandedCampaign(expandedCampaign === campaign ? null : campaign);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/stats?filter=campaign&value=${encodeURIComponent(campaign)}`);
+      const data = await response.json();
+      setCampaignLeads({ ...campaignLeads, [campaign]: data.leads || [] });
+      setExpandedCampaign(campaign);
+    } catch (err) {
+      console.error("Failed to fetch campaign leads:", err);
     }
   };
 
@@ -179,16 +198,72 @@ export default function StatsPage() {
             <h2 className="text-2xl font-bold mb-4 font-serif-display">Leads by Campaign</h2>
             <div className="bg-[#0a4a3b] rounded-lg border border-[#FFB800]/20 overflow-hidden">
               {Object.entries(stats.byCampaign).map(([campaign, count], idx) => (
-                <div
-                  key={campaign}
-                  className={`p-4 flex justify-between ${
-                    idx !== Object.entries(stats.byCampaign).length - 1
-                      ? "border-b border-[#FFB800]/10"
-                      : ""
-                  }`}
-                >
-                  <p className="text-gray-300">{campaign}</p>
-                  <p className="text-[#FFB800] font-bold">{count as number}</p>
+                <div key={campaign}>
+                  <div
+                    onClick={() => fetchCampaignLeads(campaign)}
+                    className={`p-4 flex justify-between items-center cursor-pointer hover:bg-[#062f27] transition ${
+                      idx !== Object.entries(stats.byCampaign).length - 1
+                        ? "border-b border-[#FFB800]/10"
+                        : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <p className="text-gray-300">{campaign}</p>
+                      <span className="text-xs text-gray-500">(click to view)</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <p className="text-[#FFB800] font-bold">{count as number}</p>
+                      <svg
+                        className={`w-5 h-5 text-[#FFB800] transition-transform ${
+                          expandedCampaign === campaign ? "rotate-180" : ""
+                        }`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  {/* Expanded leads list */}
+                  {expandedCampaign === campaign && campaignLeads[campaign] && (
+                    <div className="bg-[#062f27] border-t border-[#FFB800]/10">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead>
+                            <tr className="border-b border-[#FFB800]/10 bg-[#073a2f]">
+                              <th className="px-4 py-2 text-left text-[#FFB800] text-xs">Name</th>
+                              <th className="px-4 py-2 text-left text-[#FFB800] text-xs">Email</th>
+                              <th className="px-4 py-2 text-left text-[#FFB800] text-xs">Phone</th>
+                              <th className="px-4 py-2 text-left text-[#FFB800] text-xs">Project</th>
+                              <th className="px-4 py-2 text-left text-[#FFB800] text-xs">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {campaignLeads[campaign].map((lead: Lead, leadIdx: number) => (
+                              <tr
+                                key={lead.id}
+                                className={`${
+                                  leadIdx !== campaignLeads[campaign].length - 1
+                                    ? "border-b border-[#FFB800]/5"
+                                    : ""
+                                }`}
+                              >
+                                <td className="px-4 py-2 text-gray-200">{lead.name}</td>
+                                <td className="px-4 py-2 text-gray-300 text-xs">{lead.email}</td>
+                                <td className="px-4 py-2 text-gray-300">{lead.phone}</td>
+                                <td className="px-4 py-2 text-gray-300">{lead.project}</td>
+                                <td className="px-4 py-2 text-gray-400 text-xs">
+                                  {new Date(lead.submittedAt).toLocaleDateString()}
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
