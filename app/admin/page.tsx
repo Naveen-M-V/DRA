@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getLeadStats } from "@/lib/leadsStorage";
 
 type Lead = {
   id: string;
