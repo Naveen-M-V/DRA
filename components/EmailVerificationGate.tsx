@@ -267,14 +267,57 @@ export default function EmailVerificationGate({
           submitObserver.observe(container, { childList: true, subtree: true });
           setTimeout(function() { submitObserver.disconnect(); }, 60000);
 
-          // Fire Meta Pixel Lead event — only once, only on real form success.
+          // Fire Meta Pixel Lead event AND log to database — only once, only on real form success.
           var leadFired = false;
           function fireLeadEvent() {
             if (leadFired) return;
             leadFired = true;
+            
+            // Fire Meta Pixel
             if (typeof fbq !== 'undefined') {
               fbq('trackSingle', '${pixelId}', 'Lead');
             }
+            
+            // Extract form data and log to database
+            var formInputs = container.querySelectorAll('input[name], textarea[name], select[name]');
+            var formData = {
+              name: '',
+              email: '${email}',
+              phone: '',
+              srd: '${srd}',
+              project: '${projectName}',
+              campaignName: '${campaignName}'
+            };
+            
+            formInputs.forEach(function(input) {
+              var name = input.getAttribute('name') || '';
+              var value = input.value || '';
+              if (name.toLowerCase().includes('name') && !name.toLowerCase().includes('company')) {
+                formData.name = value;
+              } else if (name.toLowerCase().includes('phone') || name.toLowerCase().includes('mobile')) {
+                formData.phone = value;
+              } else if (name.toLowerCase().includes('email') && !formData.email) {
+                formData.email = value;
+              }
+            });
+            
+            // Log to backend
+            fetch('/api/leads/verification', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'log-submission',
+                name: formData.name,
+                email: formData.email,
+                phone: formData.phone,
+                srd: formData.srd,
+                project: formData.project,
+                campaignName: formData.campaignName,
+                source: '${source || "Website"}'
+              })
+            }).catch(function(err) {
+              console.error('Failed to log lead:', err);
+            });
           }
 
           var observer = new MutationObserver(function() {
