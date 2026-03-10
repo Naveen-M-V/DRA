@@ -68,9 +68,9 @@ export async function POST(request: Request) {
 
     // Log Sell.do submissions
     if (action === "log-submission") {
-      if (!name || !email || !phone || !srd) {
+      if (!email || !srd) {
         return NextResponse.json(
-          { error: "Missing required fields: name, email, phone, srd" },
+          { error: "Missing required fields: email, srd" },
           { status: 400 },
         );
       }

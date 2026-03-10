@@ -251,10 +251,20 @@ export default function EmailVerificationGate({
           var script = document.createElement('script');
           script.src = 'https://forms.cdn.sell.do/t/forms/5ba883447c0dac3321d9f483/${formId}.js';
           script.setAttribute('data-form-id', '${formId}');
+          script.setAttribute('data-srd', '${srd}');
+          script.setAttribute('data-campaign-name', '${campaignName}');
           script.async = true;
           container.appendChild(script);
 
+          // Capture form values on submit click — BEFORE Sell.do clears the fields on success
+          var capturedLead = {
+            name: '',
+            email: '${email}',
+            phone: ''
+          };
+
           // Disable the submit button as soon as it appears (consent not yet given)
+          // Also attach a click listener to snapshot field values before submission
           var submitObserver = new MutationObserver(function() {
             var btn = container.querySelector('button[type="submit"], input[type="submit"], button.submit');
             if (btn && !btn.dataset.consentControlled) {
@@ -262,6 +272,20 @@ export default function EmailVerificationGate({
               btn.style.opacity = '0.4';
               btn.style.cursor = 'not-allowed';
               btn.dataset.consentControlled = 'true';
+              btn.addEventListener('click', function() {
+                var inputs = container.querySelectorAll('input[name], textarea[name], select[name]');
+                inputs.forEach(function(inp) {
+                  var n = (inp.getAttribute('name') || '').toLowerCase();
+                  var v = inp.value || '';
+                  if (n.includes('name') && !n.includes('company') && !n.includes('campaign')) {
+                    capturedLead.name = v;
+                  } else if (n.includes('phone') || n.includes('mobile')) {
+                    capturedLead.phone = v;
+                  } else if (n.includes('email') && !capturedLead.email) {
+                    capturedLead.email = v;
+                  }
+                });
+              });
             }
           });
           submitObserver.observe(container, { childList: true, subtree: true });
@@ -278,41 +302,18 @@ export default function EmailVerificationGate({
               fbq('trackSingle', '${pixelId}', 'Lead');
             }
             
-            // Extract form data and log to database
-            var formInputs = container.querySelectorAll('input[name], textarea[name], select[name]');
-            var formData = {
-              name: '',
-              email: '${email}',
-              phone: '',
-              srd: '${srd}',
-              project: '${projectName}',
-              campaignName: '${campaignName}'
-            };
-            
-            formInputs.forEach(function(input) {
-              var name = input.getAttribute('name') || '';
-              var value = input.value || '';
-              if (name.toLowerCase().includes('name') && !name.toLowerCase().includes('company')) {
-                formData.name = value;
-              } else if (name.toLowerCase().includes('phone') || name.toLowerCase().includes('mobile')) {
-                formData.phone = value;
-              } else if (name.toLowerCase().includes('email') && !formData.email) {
-                formData.email = value;
-              }
-            });
-            
-            // Log to backend
+            // Log to backend using values captured at submit time
             fetch('/api/leads/verification', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 action: 'log-submission',
-                name: formData.name,
-                email: formData.email,
-                phone: formData.phone,
-                srd: formData.srd,
-                project: formData.project,
-                campaignName: formData.campaignName,
+                name: capturedLead.name,
+                email: capturedLead.email,
+                phone: capturedLead.phone,
+                srd: '${srd}',
+                project: '${projectName}',
+                campaignName: '${campaignName}',
                 source: '${source || "Website"}'
               })
             }).catch(function(err) {
