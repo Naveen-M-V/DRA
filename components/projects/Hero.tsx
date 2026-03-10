@@ -91,21 +91,34 @@ export default function Hero({ project }: HeroProps) {
             </p>
           )}
           {/* Info cards */}
-          <div className="mt-4 grid grid-cols-3 gap-2">
-            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
-              <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">{isInara ? "Luxury 4 BHK" : "Launch Price"}</p>
-              <p className="mt-1 text-[12px] font-black text-white sm:text-sm">{isInara ? "Villas" : project.launchPrice}</p>
+          {isInara ? (
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
+                <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">Luxury 4 BHK</p>
+                <p className="mt-1 text-[12px] font-black text-white sm:text-sm">Villas</p>
+              </div>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
+                <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">Starting From</p>
+                <p className="mt-1 text-[12px] font-black text-white sm:text-sm">₹2.90 Cr</p>
+                <p className="mt-0.5 text-[7px] font-medium uppercase tracking-wide text-white/50 sm:text-[8px]">All Incl. + Govt. Levies</p>
+              </div>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
+                <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">Possession</p>
+                <p className="mt-1 text-[12px] font-black text-white sm:text-sm">Ready to Move</p>
+              </div>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
-              <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">{isInara ? "Starting From" : "Post Launch"}</p>
-              <p className="mt-1 text-[12px] font-black text-white sm:text-sm">{isInara ? "₹2.90 Cr" : project.postLaunchPrice}</p>
-              {isInara && <p className="mt-0.5 text-[7px] font-medium uppercase tracking-wide text-white/50 sm:text-[8px]">All Incl. + Govt. Levies</p>}
+          ) : (
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
+                <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">Price</p>
+                <p className="mt-1 text-[12px] font-black text-white sm:text-sm">{project.launchPrice}</p>
+              </div>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
+                <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">Save Up To</p>
+                <p className="mt-1 text-[12px] font-black text-white sm:text-sm">{project.savings}</p>
+              </div>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3 text-center backdrop-blur-md">
-              <p className="text-[8px] font-bold uppercase tracking-wide text-yellow-300 sm:text-[9px]">{isInara ? "Possession" : "Save Up To"}</p>
-              <p className="mt-1 text-[12px] font-black text-white sm:text-sm">{isInara ? "Ready to Move" : project.savings}</p>
-            </div>
-          </div>
+          )}
           {/* Form */}
           <div className="mt-5">
             <div className="rounded-2xl border border-white/10 bg-[#062f27]/80 p-1 shadow-2xl backdrop-blur-2xl">
@@ -171,21 +184,34 @@ export default function Hero({ project }: HeroProps) {
               {project.location}
             </p>
           )}
-          <div className="mt-6 grid grid-cols-3 gap-3">
-            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
-              <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">{isInara ? "Luxury 4 BHK" : "Launch Price"}</p>
-              <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">{isInara ? "Villas" : project.launchPrice}</p>
+          {isInara ? (
+            <div className="mt-6 grid grid-cols-3 gap-3">
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">Luxury 4 BHK</p>
+                <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">Villas</p>
+              </div>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">Starting From</p>
+                <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">₹2.90 Cr</p>
+                <p className="mt-0.5 text-[8px] font-medium uppercase tracking-wide text-white/50">All Incl. + Govt. Levies</p>
+              </div>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">Possession</p>
+                <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">Ready to Move</p>
+              </div>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
-              <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">{isInara ? "Starting From" : "Post Launch"}</p>
-              <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">{isInara ? "₹2.90 Cr" : project.postLaunchPrice}</p>
-              {isInara && <p className="mt-0.5 text-[8px] font-medium uppercase tracking-wide text-white/50">All Incl. + Govt. Levies</p>}
+          ) : (
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">Price</p>
+                <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">{project.launchPrice}</p>
+              </div>
+              <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
+                <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">Save Up To</p>
+                <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">{project.savings}</p>
+              </div>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-xl border border-yellow-600/30 bg-black/35 px-2 py-3.5 text-center backdrop-blur-md">
-              <p className="text-[9px] font-bold uppercase tracking-wide text-yellow-300">{isInara ? "Possession" : "Save Up To"}</p>
-              <p className="mt-1 text-[11px] font-black text-white lg:text-sm xl:text-base">{isInara ? "Ready to Move" : project.savings}</p>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Right Column — Form */}

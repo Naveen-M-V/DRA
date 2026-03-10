@@ -251,10 +251,33 @@ export default function EmailVerificationGate({
           var script = document.createElement('script');
           script.src = 'https://forms.cdn.sell.do/t/forms/5ba883447c0dac3321d9f483/${formId}.js';
           script.setAttribute('data-form-id', '${formId}');
-          script.setAttribute('data-srd', '${srd}');
-          script.setAttribute('data-campaign-name', '${campaignName}');
           script.async = true;
           container.appendChild(script);
+
+          // Inject SRD + campaign as hidden fields once the form renders.
+          // This is the only reliable way to pass SRD to Sell.do's embedded widget —
+          // data-* attributes on the script tag are ignored by their JS.
+          var srdInjected = false;
+          var srdObserver = new MutationObserver(function() {
+            if (srdInjected) return;
+            var form = container.querySelector('form');
+            if (!form) return;
+            srdInjected = true;
+            srdObserver.disconnect();
+
+            function hiddenInput(name, value) {
+              var inp = document.createElement('input');
+              inp.type = 'hidden';
+              inp.name = name;
+              inp.value = value;
+              form.appendChild(inp);
+            }
+            hiddenInput('sell_do[campaign][srd]', '${srd}');
+            hiddenInput('sell_do[campaign][name]', '${campaignName}');
+            hiddenInput('sell_do[campaign][source]', '${source || "Website"}');
+          });
+          srdObserver.observe(container, { childList: true, subtree: true });
+          setTimeout(function() { srdObserver.disconnect(); }, 15000);
 
           // Capture form values on submit click — BEFORE Sell.do clears the fields on success
           var capturedLead = {
