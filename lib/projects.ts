@@ -76,7 +76,7 @@ export const projects: Record<string, ProjectContent> = {
       "1143 - 2372 Sq.ft",
       "Grand Entrance Arch",
     ],
-    pixelId: "25670356619305148",
+    pixelId: "1747733392609935",
   },
 };
 
